@@ -10,6 +10,16 @@ datasource db {
 model User {
   id         String @id @default(cuid())
   name       String
-  userID     String
+  userID     String @unique
   csrf_token String
+  posts      Post[]
+}
+
+model Post {
+  id        Int    @id @default(autoincrement())
+  url       String
+  startTime String
+  endTime   String
+  user      User   @relation(fields: [userID], references: [id])
+  userID    String
 }
