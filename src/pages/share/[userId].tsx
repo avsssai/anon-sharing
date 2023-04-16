@@ -114,6 +114,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const SECRET = process.env.JWT_SECRET as string;
 	if (!token) {
 		const { userId } = context.query;
+		console.log(context.query);
 		// console.log(userId);
 		const user = await getUser(userId as string);
 		return {
@@ -129,7 +130,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 		const { user_id, name } = decoded.sub as unknown as ISub;
 		const user = await getUser(user_id);
 		console.log(user_id);
-		if (!user) {
+		if (!user || user_id !== context.query.userId) {
 			const { userId } = context.query;
 			// console.log(userId);
 			const user = await getUser(userId as string);
