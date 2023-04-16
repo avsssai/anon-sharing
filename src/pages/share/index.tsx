@@ -20,14 +20,22 @@ export default function Share({
 
 	return (
 		<Layout>
-			<div className='flex flex-col gap-4'>
-				<h1>Welcome {user.name}</h1>
+			<div className='flex flex-col gap-4 '>
+				<h1 className='text-xl'>
+					Welcome{" "}
+					<span className='text-red-500 font-bold text-center'>
+						{user.name}
+					</span>
+				</h1>
 				<div>
 					<h3>
 						Please use the below URL to share with your friends and
-						colleagues to get anonymous clips!
+						colleagues to get anonymous songs!
 					</h3>
-					<div>{user?.userID}</div>
+					<div className='text-bold font-bold mt-4 text-lg md:text-xl text-red-500'>
+						{/* https://{window.location.host}/share/{user?.userID} */}
+						https://share/{user?.userID}
+					</div>
 				</div>
 			</div>
 		</Layout>

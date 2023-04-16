@@ -1,10 +1,11 @@
 import { GetServerSidePropsContext, NextPage } from "next";
 import jwt from "jsonwebtoken";
-import { getUser } from "../api/utils/dbActions";
+import { getPosts, getUser } from "../api/utils/dbActions";
 import { User } from "@prisma/client";
 import Layout from "@/Components/Layout";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Result from "@/Components/Result";
 
 interface IProps {
 	user: User;
@@ -32,7 +33,14 @@ const UserIdPage = ({ user, showResults, userName }: IProps) => {
 	if (user && showResults) {
 		return (
 			<Layout>
-				<h1>Showing results for {user.name}</h1>;
+				<h1 className='text-xl  font-bold flex gap-1'>
+					Showing results for{" "}
+					<div className='text-red-500'>{user.name}</div>
+				</h1>
+				<div className=''>
+					<Result link='https://open.spotify.com/track/3K9O6TqcIMX8plGkzBARiK?si=9ff2c79725ce4348' />
+					<Result link='https://open.spotify.com/playlist/37i9dQZF1DXcBOn0qcyd5C?si=709e221ac2af4a08' />
+				</div>
 			</Layout>
 		);
 	}
@@ -129,7 +137,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 		const decoded = jwt.verify(token, SECRET);
 		const { user_id, name } = decoded.sub as unknown as ISub;
 		const user = await getUser(user_id);
-		console.log(user_id);
+		// const posts = await getPosts
+		const posts = await getPosts(user!.id);
+		console.log(posts, "posts");
 		if (!user || user_id !== context.query.userId) {
 			const { userId } = context.query;
 			// console.log(userId);

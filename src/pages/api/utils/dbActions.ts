@@ -7,3 +7,11 @@ export async function getUser(userId: string) {
 	});
 	return user;
 }
+export async function getPosts(userId: string) {
+	const posts = await prisma.post.findMany({
+		where: {
+			userID: userId,
+		},
+	});
+	return posts;
+}
